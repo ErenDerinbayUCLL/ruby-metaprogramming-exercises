@@ -3,12 +3,25 @@
 # TODO: Write my_attr_accessor, preferably using my_attr_reader and my_attr_writer
 
 class Singer
-  # TODO: Change to my_attr_writer
-  attr_writer :first_name
-  # TODO: Change to my_attr_reader
-  attr_reader :last_name
-  # TODO: Change to my_attr_acessor
-  attr_accessor :birth_year, :greatest_hit
+  # # TODO: Change to my_attr_writer
+  # attr_writer :first_name
+  # # TODO: Change to my_attr_reader
+  # attr_reader :last_name
+  # # TODO: Change to my_attr_accessor
+  # attr_accessor :birth_year, :greatest_hit
+
+  def my_attr_writer=(value)
+    @first_name = value
+  end
+
+  def my_attr_reader
+    @last_name
+  end
+
+  def my_attr_accessor=(value1, value2)
+    @birth_year = value1
+    @greatest_hit = value2
+  end
 
   def initialize(first_name, last_name, birth_year, greatest_hit)
     @first_name = first_name
@@ -28,7 +41,7 @@ class Singer
   end
 
   def to_s
-    "#{first_name} #{last_name}, born in #{birth_year}, greatest hit: \"#{greatest_hit}\""
+    "#{first_name} #{my_attr_reader}, born in #{my_attr_accessor}, greatest hit: \"#{greatest_hit}\""
   end
 end
 
