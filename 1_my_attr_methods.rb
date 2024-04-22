@@ -3,26 +3,6 @@
 # TODO: Write my_attr_accessor, preferably using my_attr_reader and my_attr_writer
 
 class Singer
-  # # TODO: Change to my_attr_writer
-  # attr_writer :first_name
-  # # TODO: Change to my_attr_reader
-  # attr_reader :last_name
-  # # TODO: Change to my_attr_accessor
-  # attr_accessor :birth_year, :greatest_hit
-
-  def my_attr_writer=(value)
-    @first_name = value
-  end
-
-  def my_attr_reader
-    @last_name
-  end
-
-  def my_attr_accessor=(value1, value2)
-    @birth_year = value1
-    @greatest_hit = value2
-  end
-
   def initialize(first_name, last_name, birth_year, greatest_hit)
     @first_name = first_name
     @last_name = last_name
@@ -30,27 +10,54 @@ class Singer
     @greatest_hit = greatest_hit
   end
 
-  # An example of a getter (or "reader") if we didn't use attr_reader
-  def first_name
-    @first_name
+  # Define my_attr_reader method
+  def my_attr_reader(variable)
+    instance_variable_get("@#{variable}")
   end
 
-  # An example of a setter (or "writer") if we didn't use attr_writer
+  # Define my_attr_writer method
+  def my_attr_writer(variable, value)
+    instance_variable_set("@#{variable}", value)
+  end
+
+  # Define my_attr_accessor method
+  def my_attr_accessor(*variables)
+    variables.each do |variable|
+      define_method(variable) do
+        instance_variable_get("@#{variable}")
+      end
+
+      define_method("#{variable}=") do |value|
+        instance_variable_set("@#{variable}", value)
+      end
+    end
+  end
+
+  # Usage example of my_attr_accessor
+  # my_attr_accessor :birth_year, :greatest_hit
+
+  # Usage example of my_attr_reader
+  def first_name
+    my_attr_reader(:first_name)
+  end
+
+  # Usage example of my_attr_writer
   def last_name=(value)
-    @last_name = value
+    my_attr_writer(:last_name, value)
   end
 
   def to_s
-    "#{first_name} #{my_attr_reader}, born in #{my_attr_accessor}, greatest hit: \"#{greatest_hit}\""
+    "#{first_name} #{my_attr_reader(:last_name)}, born in #{my_attr_reader(:birth_year)}, greatest hit: \"#{my_attr_reader(:greatest_hit)}\""
   end
 end
+
 
 sinatra = Singer.new("Nancy", "Sinatra", 1940, "These Boots Are Made for Walkin'")
 
 puts sinatra
 
-sinatra.first_name = "Frank"
-sinatra.birth_year = 1915
-sinatra.greatest_hit = "My Way"
+sinatra.my_attr_writer(:first_name, "Frank")
+sinatra.my_attr_writer(:birth_year, 1915)
+sinatra.my_attr_writer(:greatest_hit, "My Way")
 
 puts sinatra
